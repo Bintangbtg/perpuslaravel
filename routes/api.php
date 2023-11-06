@@ -5,17 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\http\Controllers\bukucontroller;
 use App\http\Controllers\kelascontroller;
 use App\http\Controllers\siswacontroller;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+use App\http\Controllers\TransaksiController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -38,3 +28,7 @@ Route::post('/addbuku',[bukucontroller::class,'addbuku']);
 Route::put('/updatebuku/{id}', [bukucontroller::class, 'updatebuku']);
 Route::get('/getbukuById/{id}', [bukucontroller::class, 'getbukuById']);
 Route::delete('/deletebuku/{id}', [bukucontroller::class, 'deletebuku']);
+
+Route::post('pinjam_buku', [TransaksiController::class,'pinjamBuku']);
+Route::post('tambah_item/{id}',[TransaksiController::class,'tambahItem']);
+Route::post('mengembalikan_buku',[TransaksiController::class,'mengembalikanBuku']);

@@ -6,9 +6,17 @@ use App\http\Controllers\bukucontroller;
 use App\http\Controllers\kelascontroller;
 use App\http\Controllers\siswacontroller;
 use App\http\Controllers\TransaksiController;
+use App\http\Controllers\API\AuthController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
 });
 
 Route::get('/getkelas',[kelascontroller::class,'getkelas']);

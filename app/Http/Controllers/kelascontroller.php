@@ -5,17 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\kelas;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class kelascontroller extends Controller
 {
     public function getkelas()
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $dt_kelas = kelas::get();
         return response()->json($dt_kelas);
     }
 
     public function addkelas(Request $req)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(), [
             'nama_kelas' => 'required',
             'kelompok' => 'required',
@@ -41,6 +54,12 @@ class kelascontroller extends Controller
 
     public function updatekelas(Request $req, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(), [
             'nama_kelas' => 'required',
             'kelompok' => 'required',
@@ -67,6 +86,12 @@ class kelascontroller extends Controller
 
     public function getkelasById($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $kelas = kelas::where('id_kelas',$id)->first();
         return Response()->json($kelas);
 
@@ -77,6 +102,11 @@ class kelascontroller extends Controller
 
     public function deletekelas($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
 
         $hapus = kelas::where('id_kelas',$id)->delete();
 

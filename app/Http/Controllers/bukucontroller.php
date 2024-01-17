@@ -5,17 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\buku;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class bukucontroller extends Controller
 {
     public function getbuku()
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+    
         $dt_buku = buku::get();
-        return response()->json($dt_buku);
+        return response()->json([
+            'books' => $dt_buku,
+        ]);
     }
 
     public function addbuku(Request $req)
 {
+    if (!Auth::check()) {
+        return response()->json([
+            'message' => 'Login Dulu coy!',
+        ], 401);
+    }
+
     $validator = Validator::make($req->all(), [
         'foto' => 'required|image',
         'nama_buku' => 'required',
@@ -52,6 +68,12 @@ class bukucontroller extends Controller
 
     public function updatebuku(Request $req, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(), [
             'foto' => 'required',
             'nama_buku' => 'required',
@@ -79,6 +101,12 @@ class bukucontroller extends Controller
 
     public function getbukuById($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $buku = buku::where('id_buku',$id)->first();
         return Response()->json($buku);
 
@@ -89,6 +117,11 @@ class bukucontroller extends Controller
 
     public function deletebuku($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
 
         $hapus = buku::where('id_buku',$id)->delete();
 

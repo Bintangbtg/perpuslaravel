@@ -5,17 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\siswa;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class siswacontroller extends Controller
 {
     public function getsiswa()
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $dt_siswa = siswa::get();
         return response()->json($dt_siswa);
     }
 
     public function addsiswa(Request $req)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(), [
             'nama_siswa' => 'required',
             'tanggal_lahir' => 'required',
@@ -49,6 +62,12 @@ class siswacontroller extends Controller
 
     public function updatesiswa(Request $req, $id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(), [
             'nama_siswa' => 'required',
             'tanggal_lahir' => 'required',
@@ -84,6 +103,12 @@ class siswacontroller extends Controller
 
     public function getsiswaById($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $siswa = siswa::where('id_siswa',$id)->first();
         return Response()->json($siswa);
 
@@ -94,6 +119,11 @@ class siswacontroller extends Controller
 
     public function deletesiswa($id)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
 
         $hapus = siswa::where('id_siswa',$id)->delete();
 

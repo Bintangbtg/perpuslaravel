@@ -7,10 +7,17 @@ use App\Models\detailPeminjamanBukuModel;
 use App\Models\pengembalianBukuModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
     public function pinjamBuku(Request $req){
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(),[
             'id_siswa'=>'required',
             'tanggal_pinjam'=>'required',
@@ -33,6 +40,12 @@ class TransaksiController extends Controller
     }
 
     public function tambahItem(Request $req,$id){
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'Login Dulu coy!',
+            ], 401);
+        }
+
         $validator = Validator::make($req->all(),[
             'id_buku'=> 'required',
             'qty'=>'required'
@@ -55,6 +68,12 @@ class TransaksiController extends Controller
 
     public function mengembalikanBuku(Request $req)
 {
+    if (!Auth::check()) {
+        return response()->json([
+            'message' => 'Login Dulu coy!',
+        ], 401);
+    }
+
     $validator = Validator::make($req->all(), [
         'id_peminjaman_buku' => 'required'
     ]);

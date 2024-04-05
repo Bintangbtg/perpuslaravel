@@ -17,8 +17,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::get('checkToken', 'checkToken');
 });
 
+Route::get('/getkelas', [kelascontroller::class, 'getkelas']);
 Route::post('/addkelas',[kelascontroller::class,'addkelas']);
 Route::put('/updatekelas/{id}', [kelascontroller::class, 'updatekelas']);
 Route::get('/getkelasById/{id}', [kelascontroller::class, 'getkelasById']);
@@ -39,3 +41,8 @@ Route::delete('/deletebuku/{id}', [bukucontroller::class, 'deletebuku']);
 Route::post('pinjam_buku', [TransaksiController::class,'pinjamBuku']);
 Route::post('tambah_item/{id}',[TransaksiController::class,'tambahItem']);
 Route::post('mengembalikan_buku',[TransaksiController::class,'mengembalikanBuku']);
+Route::get('getpinjam',[TransaksiController::class,'daftarPinjaman']);
+Route::get('getkembali',[TransaksiController::class,'daftarKembali']);
+Route::get('peminjaman/{id}',[TransaksiController::class,'getPeminjamanBukuById']);
+Route::put('/update/{id}',[TransaksiController::class, 'updatePeminjamanBuku']);
+Route::get('daftarPinjamDetail/{id}',[TransaksiController::class, 'daftarPinjamDetail']);

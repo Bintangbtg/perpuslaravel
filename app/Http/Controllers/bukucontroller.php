@@ -33,7 +33,7 @@ class bukucontroller extends Controller
     }
 
     $validator = Validator::make($req->all(), [
-        'foto' => 'required|image',
+        'foto' => 'required',
         'nama_buku' => 'required',
         'deskripsi' => 'required'
     ]);
@@ -54,16 +54,14 @@ class bukucontroller extends Controller
             'deskripsi' => $req->get('deskripsi'),
         ]);
         
-        return response()->json(['message' => 'Buku berhasil ditambahkan.']);
-        }
-
-        return response()->json(['message' => 'Gagal mengunggah file foto.']);
-
         if ($save) {
-            return response()->json(['status' => true, 'message' => 'Sukses menambahkan buku bro']);
+            return response()->json(['message' => 'Buku berhasil ditambahkan.']);
         } else {
-            return response()->json(['status' => false, 'message' => 'Gagal menambahkan buku bro']);
+            return response()->json(['message' => 'Gagal menambahkan buku bro']);
         }
+    } 
+    
+    return response()->json(['message' => 'Gagal mengunggah file foto.']);
     } 
 
     public function updatebuku(Request $req, $id)
@@ -99,6 +97,38 @@ class bukucontroller extends Controller
         return response()->json(['status' => false, 'message' => 'Tidak ada perubahan data buku']);
     }
 
+//         $validator = Validator::make($req->all(), [
+//             'foto' => 'required',
+//             'nama_buku' => 'required',
+//             'deskripsi' => 'required'
+//         ]);
+    
+//         if ($validator->fails()) {
+//             return response()->json($validator->errors()->toJson());
+//         }
+
+//         if ($req->hasFile('foto')) {
+//             $file = $req->file('foto');
+//             $fileName = $file->getClientOriginalName();
+    
+//             $file->move(public_path('uploads'), $fileName);
+
+//         $ubah = buku::where('id_buku', $id)->update([
+//             'foto' => $fileName,
+//             'nama_buku' => $req->get('nama_buku'),
+//             'deskripsi' => $req->get('deskripsi'),
+//         ]);
+        
+//         if ($ubah) {
+//             return response()->json(['status' => true, 'message' => 'Sukses Masbro']);
+//         } else{
+//             return response()->json(['status' => false, 'message' => 'Gagal Masbro']);
+//         }   
+        
+//         return response()->json(['status' => false, 'message' => 'Tidak ada perubahan data buku']);
+//     }
+// }
+
     public function getbukuById($id)
     {
         if (!Auth::check()) {
@@ -107,12 +137,13 @@ class bukucontroller extends Controller
             ], 401);
         }
 
-        $buku = buku::where('id_buku',$id)->first();
-        return Response()->json($buku);
+        $buku = buku::where('id_buku', $id)->first();
 
         if (!$buku) {
             return response()->json(['status' => false, 'message' => 'buku tidak ditemukan']);
         }
+
+        return response()->json($buku);
     }
 
     public function deletebuku($id)

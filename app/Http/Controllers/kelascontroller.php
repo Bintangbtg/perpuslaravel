@@ -11,11 +11,11 @@ class kelascontroller extends Controller
 {
     public function getkelas()
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'message' => 'Login Dulu coy!',
-            ], 401);
-        }
+         if (!Auth::check()) {
+             return response()->json([
+                 'message' => 'Login Dulu coy!',
+             ], 401);
+         }
 
         $dt_kelas = kelas::get();
         return response()->json($dt_kelas);
@@ -54,11 +54,11 @@ class kelascontroller extends Controller
 
     public function updatekelas(Request $req, $id)
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'message' => 'Login Dulu coy!',
-            ], 401);
-        }
+         if (!Auth::check()) {
+             return response()->json([
+                 'message' => 'Login Dulu coy!',
+             ], 401);
+         }
 
         $validator = Validator::make($req->all(), [
             'nama_kelas' => 'required',
@@ -86,11 +86,11 @@ class kelascontroller extends Controller
 
     public function getkelasById($id)
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'message' => 'Login Dulu coy!',
-            ], 401);
-        }
+         if (!Auth::check()) {
+             return response()->json([
+                 'message' => 'Login Dulu coy!',
+             ], 401);
+         }
 
         $kelas = kelas::where('id_kelas',$id)->first();
         return Response()->json($kelas);

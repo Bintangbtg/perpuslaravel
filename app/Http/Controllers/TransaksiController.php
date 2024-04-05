@@ -39,6 +39,43 @@ class TransaksiController extends Controller
         }
     }
 
+    public function getPeminjamanBukuById($id_peminjaman_buku)
+{
+    $peminjaman = PeminjamanBukuModel::find($id_peminjaman_buku);
+
+    if (!$peminjaman) {
+        return response()->json(['message' => 'Data tidak ditemukan'], 404);
+    }
+
+    return response()->json($peminjaman);
+}
+
+public function updatePeminjamanBuku(Request $request, $id)
+    {
+        $peminjaman = PeminjamanBukuModel::find($id);
+
+        if (!$peminjaman) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'id_siswa' => 'required',
+            'tanggal_pinjam' => 'required',
+            'tanggal_kembali' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $peminjaman->id_siswa = $request->id_siswa;
+        $peminjaman->tanggal_pinjam = $request->tanggal_pinjam;
+        $peminjaman->tanggal_kembali = $request->tanggal_kembali;
+        $peminjaman->save();
+
+        return response()->json(['message' => 'Data berhasil diperbarui', 'data' => $peminjaman]);
+    }
+
     public function tambahItem(Request $req,$id){
         if (!Auth::check()) {
             return response()->json([
@@ -116,4 +153,39 @@ class TransaksiController extends Controller
 
     return response()->json($data);
 }
+
+    public function daftarPinjaman()
+    {
+        $dt_buku = PeminjamanBukuModel::get();
+        return response()->json($dt_buku);
+    }
+
+    public function daftarKembali()
+    {
+        $dt_kembali = pengembalianBukuModel::get();
+        return response()->json($dt_kembali);
+    }
+
+    // public function daftarPinjamDetail()
+    // {
+    //     $dt_buku = detailPeminjamanBukuModel::get();
+    //     return response()->json($dt_buku);
+    // }
+
+    // public function daftarPinjamDetaill($id)
+    // {
+    //     $dt_buku = detailPeminjamanBukuModel::where('id_peminjaman_buku', $id)->get();
+    //     return response()->json($dt_buku);
+    // }
+
+    public function daftarPinjamDetail($id)
+    {
+        $detail = detailPeminjamanBukuModel::where('id_peminjaman_buku', $id)->first();
+
+        if (!$detail) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json(['id_buku' => $detail->id_buku]);
+    }
 }
